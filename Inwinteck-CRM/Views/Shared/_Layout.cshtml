@@ -1,0 +1,88 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>@ViewBag.Title</title>
+    <!-- prism css -->
+    <link rel="stylesheet" href="~/assets/css/plugins/prism-coy.css">
+    <!-- vendor css -->
+    <link rel="stylesheet" href="~/assets/css/style.css">
+    <link rel="stylesheet" href="~/assets/css/prav.css">
+
+    <link rel="stylesheet" href="~/assets/dropify/css/dropify.min.css">
+    <!-- select2 css -->
+    <link rel="stylesheet" href="~/assets/css/plugins/select2.min.css">
+
+    <!-- data tables css -->
+    <link rel="stylesheet" href="~/assets/css/plugins/dataTables.bootstrap4.min.css">
+
+</head>
+<body>
+    <!-- Loader Starts -->
+    <div id="loader-wrapper" style="display: none;">
+        <div id="loader" style="display: none;">
+            <img src="~/assets/images/Ripple-1s-200px.gif" />
+        </div>
+    </div>
+    <!-- Loader Ends -->
+    @Html.Action("_Menu", "Partial")
+
+    <div class="pcoded-main-container">
+        <div class="pcoded-wrapper container">
+            <div class="pcoded-content">
+                <div class="pcoded-inner-content">
+                    <div class="main-body">
+                        @RenderBody()
+                    </div>
+
+                    <!-- end::page content -->
+                    <!-- begin::footer -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="~/assets/js/vendor-all.min.js"></script>
+    <script src="~/assets/js/plugins/bootstrap.min.js"></script>
+    <script src="~/assets/js/ripple.js"></script>
+    <script src="~/assets/js/pcoded.min.js"></script>
+
+    <!-- prism Js -->
+    <script src="~/assets/js/plugins/prism.js"></script>
+
+    <script src="~/assets/js/horizontal-menu.js"></script>
+    <script src="~/assets/dropify/js/dropify.min.js"></script>
+    <script src="~/assets/js/pages/dropify.js"></script>
+
+    <!-- datatable Js -->
+    <script src="~/assets/js/plugins/jquery.dataTables.min.js"></script>
+    <script src="~/assets/js/plugins/dataTables.bootstrap4.min.js"></script>
+    <script src="~/assets/js/pages/data-advance-custom.js"></script>
+    <!-- select2 Js -->
+    <script src="~/assets/js/plugins/select2.full.min.js"></script>
+    <!-- form-select-custom Js -->
+    <script src="~/assets/js/pages/form-select-custom.js"></script>
+    <script src="~/assets/js/plugins/jquery.bootstrap.wizard.min.js"></script>
+    <script src="~/assets/js/plugins/jquery.validate.min.js"></script>
+    <!-- form-picker-custom Js -->
+    <script src="~/assets/js/pages/form-validation.js"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBvhQbrULBXqk9wPb9RjTeacVk3A3g-ci8"></script>
+    <script src="~/assets/js/axios.min.js"></script>
+    <script type="text/javascript">
+         //     var baseurl = "http://localhost:1957/"
+    /*var baseurl = "https://fms.inwinteck.com/"*/
+
+          var baseurl = "https://fms.inwinteck.com/"
+    </script>
+    @RenderSection("scripts", required: false)
+    <script type="text/javascript">
+        $("form").submit(function (e) {
+            $("#loader-wrapper").show();
+            $("#loader").show();
+        });
+    </script>
+</body>
+
+</html>
