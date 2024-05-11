@@ -577,6 +577,7 @@ namespace Inwinteck_CRM.Models
 
         public string WhatsappChat { get; set; }
 
+      
 
         public string State { get; set; }
 
@@ -693,7 +694,6 @@ namespace Inwinteck_CRM.Models
 
         public int? Old_Ticket { get; set; }
         public string Quality_Remark { get; set; }
-
 
 
     }

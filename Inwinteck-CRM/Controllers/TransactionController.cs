@@ -294,7 +294,7 @@ namespace Inwinteck_CRM.Controllers
             return RedirectToAction("editTicket", "Transaction", new { id = sa.Id });
         }
         public ActionResult editTicket(int id)
-        {
+        { 
             // To check user access right
             string uri1 = "/Transaction/Ticket";
 
@@ -310,11 +310,12 @@ namespace Inwinteck_CRM.Controllers
             }
             if (cm.record_update == false)
             {
-                return RedirectToAction("UnAuthorisedAccess", "Dashboard");
+                return RedirectToAction("UnAuthorisedAccess", "Dashboard"); 
             }
             // access right ends 
-            Ticket ti = new Ticket();
-            ti = (from s in db.Ticket where s.Id == id select s).FirstOrDefault(); 
+            Ticket ti = new Ticket();   
+            ti = (from s in db.Ticket where s.Id == id select s).FirstOrDefault();
+            ViewBag.Quality_Remark = ti.Quality_Remark;
             ViewBag.Country = (from c in db.Country where c.Status == 1 select new SelectListItem { Text = c.CountryName, Value = c.CountryName.Trim() }).ToList();
             ViewBag.Customer = (from s in db.EU_Master where s.Id == ti.EU_ID select s.Customer_Name).FirstOrDefault();
             ViewBag.OEM = (from c in db.HeaderDescription where c.header_id == 4 && c.Status == 1 select new SelectListItem { Text = c.header_description, Value = SqlFunctions.StringConvert((double)c.id).Trim() }).ToList();
@@ -350,13 +351,14 @@ namespace Inwinteck_CRM.Controllers
 
             ViewBag.System_info = (from s in db.Ticket_System_Info where s.Ticket_no == ti.Id select s).ToList();
 
+          //  var Quality_Remark = (from s in db.Ticket where );
             return View(ti);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         [ValidateInput(false)]
-        public ActionResult editTicket(Ticket sa, HttpPostedFileBase pht, string[] email_office, string Comments,string WhatsappChat, string Quality_Remark,List<Part_Ticket_Data> IV, string[] Certification_Name)
+        public ActionResult editTicket(Ticket sa, HttpPostedFileBase pht, string[] email_office, string Comments,string WhatsappChat,List<Part_Ticket_Data> IV, string[] Certification_Name)
         {
             string email = "";
 
@@ -367,24 +369,17 @@ namespace Inwinteck_CRM.Controllers
                 email = email + i + ",";
             }
 
-
             email = email.Remove(email.Length - 1);
+           
 
-            Ticket_Email TEE = new Ticket_Email();
-            TEE = (from s in db.Ticket_Email where s.Ticket_no == sa.Id select s).FirstOrDefault();
-          
-            if (email == TEE.Email)
-            {
-
-            }
-            else
+            Ticket_Email TEE = db.Ticket_Email.FirstOrDefault(s => s.Ticket_no == sa.Id);
+            if (TEE != null && email != TEE.Email)
             {
                 TEE.Email = email;
-                db.Entry(TEE).State = System.Data.Entity.EntityState.Modified;
+                db.Entry(TEE).State = EntityState.Modified;
                 db.SaveChanges();
-            }
+            }   
 
-           
 
             var email_auto = (from s in db.Ticket_Email where s.Ticket_no == sa.Id select s).FirstOrDefault();
             var fe = (from s in db.FE_Master_Personal where s.Id == sa.FE_ID select s).FirstOrDefault();
@@ -449,44 +444,47 @@ namespace Inwinteck_CRM.Controllers
                 sa.ModifiedBy = User.Identity.GetUserId();
                 sa.ModifiedOn = DateTime.Now;
                 db.Entry(sa).State = System.Data.Entity.EntityState.Modified;
+               
                 int res = db.SaveChanges();
+                
                 if (res > 0)
                 {
-                    Ticket_History th = new Ticket_History();
-                    th.Ticket_no = sa.Id;
-                    th.Comments = Comments;
-                    th.WhatsappChat = WhatsappChat;
-                    th.Quality_Remark = Quality_Remark;
-                    th.FE_ID = sa.FE_ID;
-                    th.status = sa.Status;
-                    th.CreatedBy = User.Identity.GetUserId();
-                    th.CreatedOn = DateTime.Now;
+                    Ticket_History th = new Ticket_History
+                    {
+                        Ticket_no = sa.Id,
+                        Comments = Comments,
+                        WhatsappChat = WhatsappChat,
+                        Quality_Remark = sa.Quality_Remark,
+                        FE_ID = sa.FE_ID,
+                        status = sa.Status,
+                        CreatedBy = User.Identity.GetUserId(),
+                        CreatedOn = DateTime.Now
+                    };
                     db.Ticket_History.Add(th);
                     db.SaveChanges();
-
-
                 }
+
 
                 if (IV[0].Serial_No != null)
                 {
-                    Part_Ticket_Data TSI = new Part_Ticket_Data();
-
                     //Loop and insert records.
                     foreach (Part_Ticket_Data iv in IV)
                     {
-                        TSI.Ticket_No = sa.Id;
-                        TSI.Make_Model = iv.Make_Model;
-                        TSI.Part_Description = iv.Part_Description;
-                        TSI.Part_type = iv.Part_type;
-                        TSI.Serial_No = iv.Serial_No;
-                        TSI.CreatedBy = User.Identity.GetUserId();
-                        TSI.CreatedOn = DateTime.Now;
+                        Part_Ticket_Data TSI = new Part_Ticket_Data
+                        {
+                            Ticket_No = sa.Id,
+                            Make_Model = iv.Make_Model,
+                            Part_Description = iv.Part_Description,
+                            Part_type = iv.Part_type,
+                            Serial_No = iv.Serial_No,
+                            CreatedBy = User.Identity.GetUserId(),
+                            CreatedOn = DateTime.Now
+                        };
                         db.Part_Ticket_Data.Add(TSI);
-                        db.SaveChanges();
                     }
+                    // Save changes to the database after all records are added.
+                    db.SaveChanges();
                 }
-
-
                 TempData["message"] = "Ticket Updated !!";
 
                 if (sa.Status == 20)

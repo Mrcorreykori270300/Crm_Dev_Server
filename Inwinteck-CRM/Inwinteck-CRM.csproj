@@ -325,6 +325,7 @@
     <Content Include="assets\js\axios.min.js" />
     <Content Include="assets\js\form-select-custom.js" />
     <Content Include="assets\js\horizontal-menu.js" />
+    <Content Include="assets\js\jsEditTicket.js" />
     <Content Include="assets\js\menu-setting.min.js" />
     <Content Include="assets\js\pages\ac-alert.js" />
     <Content Include="assets\js\pages\ac-datepicker.js" />

@@ -78,7 +78,7 @@
             @*<h5 class="left-nav">FE Currency: @ViewBag.Currency</h5>*@
             <h5 class="left-nav">Currency: USD</h5>
             <h5 class="left-nav" id="ticketStatus" value="">
-                Ticket Status:  
+                Ticket Status:
 
             </h5>
         </div>
@@ -277,7 +277,7 @@
                                                 </div>
                                                 <label for="Case_No" class="col-sm-2 col-form-label">Case No</label>
                                                 <div class="col-md-4">
-                                                    <input type="text" class="form-control" value="@Model.Case_No" name="Case_No" id="Case_No" placeholder="Enter your Case No" >
+                                                    <input type="text" class="form-control" value="@Model.Case_No" name="Case_No" id="Case_No" placeholder="Enter your Case No">
                                                 </div>
                                             </div>
                                             <div class="form-row">
@@ -314,7 +314,7 @@
 
                                                 <label for="Street_Address" class="col-sm-2 col-form-label">Street Address</label>
                                                 <div class="col-md-4">
-                                                    <input type="text" class="form-control" value="@Model.Street_Address" name="Street_Address" id="Street_Address" placeholder="Enter your Street Address" >
+                                                    <input type="text" class="form-control" value="@Model.Street_Address" name="Street_Address" id="Street_Address" placeholder="Enter your Street Address">
                                                 </div>
                                                 <label for="Zip_Pin_Code" class="col-sm-2 col-form-label">ZipCode/Pincode</label>
                                                 <div class="col-md-4">
@@ -718,15 +718,29 @@
                                             <label for="WhatsappChat" class="col-sm-2 col-form-label">Whatsapp Chat</label>
                                             <div class="col-md-10">
                                                 <textarea class="form-control" rows="3" placeholder="Add WhatsappChat" autocomplete="nope" name="WhatsappChat">@Model.WhatsappChat</textarea>
-                                            </div> 
-                                        </div>
-                                        
-                                        <div class="form-row">
-                                            <label for="QualityRemark" class="col-sm-2 col-form-label">Quality Remark</label>
-                                            <div class="col-md-10">
-                                                <textarea class="form-control" rows="3" placeholder="Add Remark" autocomplete="nope" name="Quality_Remark">@Model.Quality_Remark</textarea>
                                             </div>
                                         </div>
+
+     
+
+                                        <div class="form-row" id="qualityRemark">
+                                            <label for="QualityRemark" class="col-sm-2 col-form-label">Quality Remark</label>
+                                            <div class="col-md-10">
+                                                <textarea class="form-control" rows="3" placeholder="Add Remark" autocomplete="nope" name="Quality_Remark"
+                                                   @if (User.Identity.IsAuthenticated)
+                                                    {
+                                                         if (User.Identity.Name == "raj.kumbhar@inwinteck.com") 
+                                                         {
+                                                            <text>enabled</text>
+                                                         }
+                                                       else
+                                                        {
+                                                            <text>enabled</text>
+                                                        }
+                                                    }>@Model.Quality_Remark</textarea>
+                                            </div>
+                                        </div>
+
 
                                         <div class="form-row">
                                             <div class="form-group col-md-12 text-center">
@@ -737,14 +751,14 @@
                                             </div>
                                         </div>
 
+                                            </div>
+
+
+                                        </div>
+                                        <!-- /.box -->
+                                        <!-- /.box -->
+
                                     </div>
-
-
-                                    </div>
-                                    <!-- /.box -->
-                                    <!-- /.box -->
-
-                                </div>
                             </div>
 
                         </div>
@@ -932,6 +946,7 @@
 <!-- /.modal -->
 @section scripts
 {
+    <script src="~/assets/js/jsEditTicket.js"></script>
     @if (TempData["message"] != null)
     {
         <script type="text/javascript">
@@ -1722,7 +1737,7 @@
         }
 
         function Contactdelete(id) {
-           
+
             var code = $("#Office").val();
             $("#loadermodel").css('display', 'unset');
             $.get(baseurl + "/Transaction/deleteContact", { OC: id }, function (data) { });
@@ -1762,7 +1777,7 @@
         $("#Contact_btn").click(function () {
             $("#loadermodel").css('display', 'unset');
             var code = $("#Office").val();
-           
+
             $.get(baseurl + "/Transaction/ContactEUMaster", {
                 Office_ID: $("#Office").val(), Person: $("#Person").val(),
                 Designation: $("#Designation").val(), Department: $("#Department").val(), Number: $("#CNumber").val(), Email: $("#CEmail").val(),
@@ -1850,7 +1865,7 @@
         var map;
 
         function GoLocation() {
-        
+
             map = new google.maps.Map(document.getElementById('map_canvas'), {
                 zoom:14,
                 mapTypeId: 'roadmap',
@@ -2149,11 +2164,11 @@
     </script>
     <script>
         $(document).ready(function () {
-            
-                var selectedText = $("#Status").find("option:selected").text();
-                $("#ticketStatus").text("Ticket Status: " + selectedText);
-            });
-     
+
+            var selectedText = $("#Status").find("option:selected").text();
+            $("#ticketStatus").text("Ticket Status: " + selectedText);
+        });
+
     </script>
 
 
